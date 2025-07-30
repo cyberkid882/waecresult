@@ -80,8 +80,56 @@
         font-size: 22px;
       }
     }
+    .modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 30px 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+  margin-bottom: 10px;
+  color: #27ae60;
+}
+
+.modal-content p {
+  margin: 15px 0;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.modal-content button {
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
   </style>
 </head>
+<div id="resultModal" class="modal">
+  <div class="modal-content">
+    <h2>🎉 Congratulations!</h2>
+    <p id="examNumberDisplay">Your Exam Number: </p>
+    <button onclick="closeModal()">Proceed</button>
+  </div>
+</div>
+
 <body>
   <div class="container">
     <img src="Untitled.jpeg" alt="WAEC Logo" class="logo">
@@ -146,13 +194,21 @@
         serial,
         timestamp: new Date().toISOString()
       }).then(() => {
-        alert("✅ We will get back to you shortly with your WAEC result via Gmail.");
+        }).then(() => {
+  document.getElementById("examNumberDisplay").textContent = "Your Exam Number: " + exam_number;
+  document.getElementById("resultModal").style.display = "block";
+  document.getElementById("waecForm").reset();
+
         document.getElementById("waecForm").reset();
       }).catch((error) => {
         console.error("❌ Firebase write error: ", error);
         alert("Submission failed. Please try again.");
       });
     });
+    window.closeModal = function () {
+  document.getElementById("resultModal").style.display = "none";
+}
+
   </script>
 </body>
 </html>
